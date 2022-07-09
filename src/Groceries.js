@@ -1,6 +1,5 @@
 import React from 'react';
-import axios from 'axios';
-
+import { updateGrocery, createGrocery } from './store';
 import { connect } from 'react-redux';
 
 const _Groceries = ({ groceries, view, toggle, create })=> {
@@ -22,15 +21,21 @@ const _Groceries = ({ groceries, view, toggle, create })=> {
 
 const mapDispatchToProps = (dispatch)=> {
   return {
-    toggle: async(grocery)=>{
-      const updated = (await axios.put(`/api/groceries/${grocery.id}`, { purchased: !grocery.purchased })).data;
-      dispatch({ type: 'UPDATE', grocery: updated});
+    // toggle: async(grocery)=>{
+    //   const updated = (await axios.put(`/api/groceries/${grocery.id}`, { purchased: !grocery.purchased })).data;
+    //   dispatch({ type: 'UPDATE', grocery: updated});
+    // }, 
+    // create: async()=>{
+    //   const grocery = (await axios.post('/api/groceries/random')).data;
+    //   dispatch({ type: 'CREATE', grocery });
 
-    }, 
-    create: async()=>{
-      const grocery = (await axios.post('/api/groceries/random')).data;
-      dispatch({ type: 'CREATE', grocery });
-
+    // }, 
+    toggle: (grocery)=>{
+      grocery = {...grocery, purchased: !grocery.purchased };
+      dispatch(updateGrocery(grocery));
+    },
+    create: ()=>{
+      dispatch(createRandomGrocery());
     } 
   };
 };
